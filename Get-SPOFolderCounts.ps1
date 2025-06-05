@@ -1,12 +1,14 @@
 # Prompt for the tenant name (e.g., "kempy")
 $TenantName = Read-Host "Enter your SharePoint tenant name (e.g. kempy)"
 
+# Prompt for the Application (Client) ID
+$ClientId = Read-Host "Enter your Azure AD Application (Client) ID"
+
 # Construct admin URL and tenant domain from the input
 $TenantAdminUrl = "https://$TenantName-admin.sharepoint.com"
 $TenantDomain = "$TenantName.onmicrosoft.com"
 
 # Other variables
-$ClientId = "de9cc41f-05d3-479d-af33-cc74e8d38e6b"
 $CertificatePath = "C:\certs\PnPAppCert.pfx"
 $OutputCsv = "PnP_SPO_FileFolderCounts.csv"
 
