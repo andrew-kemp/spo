@@ -1,4 +1,15 @@
-# Prerequisite checks and installation
+# Prompt for the tenant name (e.g., "kempy")
+$TenantName = Read-Host "Enter your SharePoint tenant name (e.g. kempy)"
+
+# Construct admin URL and tenant domain from the input
+$TenantAdminUrl = "https://$TenantName-admin.sharepoint.com"
+$TenantDomain = "$TenantName.onmicrosoft.com"
+
+# Other variables
+$ClientId = "de9cc41f-05d3-479d-af33-cc74e8d38e6b"
+$CertificatePath = "C:\certs\PnPAppCert.pfx"
+$OutputCsv = "PnP_SPO_FileFolderCounts.csv"
+
 Write-Host "Checking PowerShell version..."
 $requiredVersion = [Version]"7.0.0"
 $currentVersion = $PSVersionTable.PSVersion
@@ -27,13 +38,6 @@ if (-not (Get-Module -ListAvailable -Name PnP.PowerShell)) {
 }
 
 Import-Module PnP.PowerShell
-
-# === CONFIGURE THESE VARIABLES ===
-$TenantAdminUrl = "https://kempy-admin.sharepoint.com"
-$ClientId = "de9cc41f-05d3-479d-af33-cc74e8d38e6b"
-$TenantDomain = "kempy.onmicrosoft.com"
-$CertificatePath = "C:\certs\PnPAppCert.pfx"
-$OutputCsv = "PnP_SPO_FileFolderCounts.csv"
 
 # --- Prompt for the certificate password at runtime
 $SecureCertPassword = Read-Host "Enter certificate password" -AsSecureString
