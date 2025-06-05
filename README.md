@@ -77,6 +77,66 @@ The CSV file will include:
 - **Azure AD App Registration** with the correct permissions
 - **Self-signed certificate** for authentication
 
+# Azure AD App Registration for PnP PowerShell Automation
+
+To enable certificate-based authentication for the Get-SPOFolderCount.ps1 script, you must register an Azure AD application and grant it permissions to SharePoint Online.
+
+## Steps
+
+### 1. Register a New App in Azure AD
+
+1. Sign in to the [Azure Portal](https://portal.azure.com).
+2. Go to **Azure Active Directory** > **App registrations** > **New registration**.
+3. Enter a name (e.g., `PnP SPO Automation`).
+4. Leave the default settings for supported account types.
+5. Click **Register**.
+
+### 2. Record Application (Client) ID and Tenant ID
+
+- After registration, copy the **Application (client) ID** and **Directory (tenant) ID**.  
+  You’ll need these for the script variables.
+
+### 3. Add Certificate
+
+1. In your registered app, go to **Certificates & secrets**.
+2. Click **Certificates** > **Upload certificate**.
+3. Upload the `.cer` file generated with `Create-PNPCert.ps1`.
+   - The `.cer` file is the public key only (never upload the `.pfx` file).
+
+### 4. API Permissions
+
+1. Go to **API permissions** > **Add a permission**.
+2. Click **SharePoint** > **Application permissions**.
+3. Add these permissions (minimum required):
+    - `Sites.Read.All`
+    - `Sites.FullControl.All` (if you need to enumerate all files/folders)
+4. Click **Add permissions**.
+5. Click **Grant admin consent** for your tenant.
+
+### 5. Assign App as SharePoint Admin (if needed)
+
+- In some cases, you may need to assign the app as a SharePoint admin for full access.
+
+### 6. Update Script Variables
+
+- Set the following in your script:
+    - `$ClientId` = Application (client) ID
+    - `$TenantDomain` = yourtenant.onmicrosoft.com
+    - `$TenantAdminUrl` = https://yourtenant-admin.sharepoint.com
+    - `$CertificatePath` = Path to your `.pfx` file
+
+### 7. Run the Script
+
+- Use PowerShell 7+ and follow the prompts.
+
+---
+
+## References
+
+- [PnP PowerShell: Certificate Authentication](https://pnp.github.io/powershell/articles/certificate-authentication.html)
+- [Microsoft Docs: Register an app in Azure AD](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app)
+
+
 ## License
 
 MIT
